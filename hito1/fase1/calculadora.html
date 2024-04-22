@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <input id="display" class="form-control" disabled>
+                <div id="calculator" class="row">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const calculator = document.querySelector('#calculator');
+        const display = document.querySelector('#display');
+        const keys = ['7', '8', '9', '+', '4', '5', '6', '-', '1', '2', '3', '*', '0', '.', '=', '/', '%', '√', '^2'];
+        let operator = '';
+        let operand1 = '';
+        let operand2 = '';
+
+        keys.forEach(key => {
+            const button = document.createElement('button');
+            button.textContent = key;
+            button.className = 'btn btn-secondary col-3';
+            calculator.appendChild(button);
+        });
+
+        calculator.addEventListener('click', event => {
+            const key = event.target.textContent;
+            if ('0123456789.'.includes(key)) {
+                operand2 += key;
+                display.value = operand2;
+            } else if ('+-*/%^2√'.includes(key)) {
+                operator = key;
+                operand1 = operand2;
+                operand2 = '';
+            } else if (key === '=') {
+                operand1 = parseFloat(operand1);
+                operand2 = parseFloat(operand2);
+                switch (operator) {
+                    case '+':
+                        display.value = operand1 + operand2;
+                        break;
+                    case '-':
+                        display.value = operand1 - operand2;
+                        break;
+                    case '*':
+                        display.value = operand1 * operand2;
+                        break;
+                    case '/':
+                        display.value = operand1 / operand2;
+                        break;
+                    case '%':
+                        display.value = operand1 % operand2;
+                        break;
+                    case '√':
+                        display.value = Math.sqrt(operand1);
+                        break;
+                    case '^2':
+                        display.value = Math.pow(operand1, 2);
+                        break;
+                }
+                operand1 = '';
+                operand2 = '';
+                operator = '';
+            }
+        });
+    </script>
+</body>
+</html>
